@@ -1,121 +1,111 @@
 "use client";
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Briefcase } from "lucide-react";
-
-const LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/services", label: "Services" },
-  { href: "/clients", label: "Our Clients" },
-  { href: "/news", label: "News" },
-  { href: "/contact", label: "Contact" },
-];
+import { Menu, X, Sun, Moon, Globe } from "lucide-react";
+import { useApp } from "@/context/AppContext";
+import { useState } from "react";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const { t, theme, setTheme, locale, setLocale } = useApp();
+  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", fn);
-    fn();
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
+  const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
+
+  const NAV_LINKS = [
+    { href: "/", label: t.nav.home },
+    { href: "/about", label: t.nav.about },
+    { href: "/services", label: t.nav.services },
+    { href: "/clients", label: t.nav.clients },
+    { href: "/news", label: t.nav.news },
+    { href: "/contact", label: t.nav.contact },
+  ];
 
   return (
-    <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border"
-            : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-6 h-[72px] flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-[10px] gradient-green flex items-center justify-center font-bold text-white text-lg font-display">
-              E
-            </div>
-            <div className="leading-tight">
-              <div className="font-bold text-[15px] text-dark">Edomias International</div>
-              <div className="text-[10px] text-gray-light uppercase tracking-widest">HR Solutions · Est. 2005</div>
-            </div>
-          </Link>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--header-glass)] backdrop-blur-md border-b border-[var(--border-color)] transition-colors">
+      <nav className="container-custom h-16 flex items-center justify-between">
+        {/* Brand */}
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-[var(--brand-primary)] flex items-center justify-center font-bold text-white">E</div>
+          <span className="font-display font-bold text-sm tracking-tight hidden sm:block">EDOMIAS</span>
+        </Link>
 
-          {/* Desktop links */}
-          <div className="hidden lg:flex items-center gap-1">
-            {LINKS.map((l) => (
+        {/* Desktop Navigation */}
+        <ul className="hidden lg:flex items-center gap-1">
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
               <Link
-                key={l.href}
-                href={l.href}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  pathname === l.href
-                    ? "text-green bg-green-pale"
-                    : "text-gray hover:text-dark hover:bg-bg2"
+                href={link.href}
+                className={`px-3 py-2 text-xs font-semibold rounded-md transition-colors ${
+                  pathname === link.href ? "text-[var(--brand-primary)] bg-[var(--accent-pale)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]"
                 }`}
               >
-                {l.label}
+                {link.label}
               </Link>
-            ))}
+            </li>
+          ))}
+        </ul>
+
+        {/* Utilities */}
+        <div className="flex items-center gap-2">
+          {/* Language Switcher */}
+          <div className="flex items-center bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg p-1">
+            <Globe size={14} className="mx-2 text-[var(--text-muted)]" />
+            <select
+              value={locale}
+              onChange={(e) => setLocale(e.target.value as any)}
+              className="bg-transparent text-[10px] font-bold uppercase tracking-wider focus:outline-none cursor-pointer pr-2"
+            >
+              <option value="en">EN</option>
+              <option value="am">አማ</option>
+              <option value="or">ORO</option>
+            </select>
           </div>
 
-          {/* CTA */}
-          <div className="hidden lg:flex items-center gap-2">
-            <Link
-              href="/contact"
-              className="px-4 py-2 text-sm font-semibold text-dark border border-border rounded-full hover:border-green hover:text-green transition-all duration-200"
-            >
-              Contact Us
-            </Link>
-            <Link
-              href="/jobs"
-              className="flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white rounded-full gradient-green hover:-translate-y-0.5 transition-all duration-200 shadow-md shadow-green/30"
-            >
-              <Briefcase size={15} />
-              Job Portal
-            </Link>
-          </div>
+          {/* Theme Toggle */}
+          <button onClick={toggleTheme} className="theme-switch" aria-label="Toggle theme">
+            {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
 
-          {/* Mobile toggle */}
-          <button
-            className="lg:hidden p-2 rounded-lg hover:bg-bg2 transition-colors"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X size={22} className="text-dark" /> : <Menu size={22} className="text-dark" />}
+          {/* Portal CTA */}
+          <Link href="/jobs" className="btn btn-primary text-xs py-2 px-4 shadow-none hidden sm:flex">
+            {t.nav.jobs}
+          </Link>
+
+          {/* Mobile Menu Toggle */}
+          <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-[var(--text-primary)]">
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
-      {open && (
-        <div className="fixed top-[72px] left-0 right-0 z-40 bg-white border-b border-border shadow-lg fade-in">
-          <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1">
-            {LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="px-4 py-3 text-sm font-medium text-gray hover:text-dark hover:bg-bg2 rounded-lg transition-all"
-              >
-                {l.label}
-              </Link>
+      {/* Mobile Navigation Overlay */}
+      {isOpen && (
+        <div className="lg:hidden absolute top-16 left-0 right-0 bg-[var(--bg-primary)] border-b border-[var(--border-color)] p-4 animate-fade-in shadow-xl">
+          <ul className="flex flex-col gap-2">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="block px-4 py-3 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] rounded-xl"
+                >
+                  {link.label}
+                </Link>
+              </li>
             ))}
-            <Link
-              href="/jobs"
-              onClick={() => setOpen(false)}
-              className="mt-2 flex items-center justify-center gap-2 py-3 text-sm font-bold text-white rounded-full gradient-green"
-            >
-              <Briefcase size={15} />
-              Job Portal
-            </Link>
-          </div>
+            <li>
+              <Link
+                href="/jobs"
+                onClick={() => setIsOpen(false)}
+                className="block text-center mt-2 btn btn-primary w-full"
+              >
+                {t.nav.jobs}
+              </Link>
+            </li>
+          </ul>
         </div>
       )}
-    </>
+    </header>
   );
 }

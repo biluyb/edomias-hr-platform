@@ -1,21 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { AppProvider } from "@/context/AppContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
+export const viewport: Viewport = {
+  themeColor: "#8DC63F",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  title: {
-    default: "Edomias International Plc — Premier HR Solutions in Ethiopia",
-    template: "%s | Edomias International Plc",
-  },
-  description:
-    "Ethiopia's leading HR outsourcing and recruitment company since 2005. Staffing, cleaning, security, landscaping, and modern job portal with ERP integration.",
-  keywords: ["HR outsourcing Ethiopia", "recruitment Ethiopia", "Edomias", "staffing Ethiopia"],
-  openGraph: {
-    title: "Edomias International Plc — Premier HR Solutions",
-    description: "Ethiopia's #1 HR outsourcing partner since 2005",
-    type: "website",
-  },
+  title: "Edomias International Plc | Enterprise HR Solutions",
+  description: "Enterprise-grade Human Resource solutions and recruitment portal for the Ethiopian market.",
+  manifest: "/manifest.json",
+  robots: "index, follow",
 };
 
 export default function RootLayout({
@@ -25,10 +24,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <AppProvider>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main id="main-content" className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </AppProvider>
       </body>
     </html>
   );
