@@ -1,18 +1,20 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Globe, Moon, Sun, ChevronRight } from "lucide-react";
+import { Menu, X, Globe, Moon, Sun, ChevronDown } from "lucide-react";
 import { useApp } from "@/context/AppContext";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const { t, theme, setTheme, locale, setLocale } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showLang, setShowLang] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -26,136 +28,166 @@ export default function Navbar() {
     { href: "/contact", label: t.nav.contact },
   ];
 
+  const languages = [
+    { code: 'en', label: 'English', sub: 'Global' },
+    { code: 'am', label: 'አማርኛ', sub: 'Ethiopia' },
+    { code: 'or', label: 'Oromoo', sub: 'East Africa' }
+  ];
+
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
-        scrolled ? "h-20 glass-ui shadow-lux" : "h-24 bg-transparent"
+      style={{ zIndex: 9999 }}
+      className={`fixed top-0 left-0 right-0 transition-all duration-500 ${
+        scrolled ? "h-20 bg-[var(--glass)] backdrop-blur-xl border-b border-[var(--border)] shadow-xl" : "h-28 bg-transparent"
       }`}
     >
-      <div className="container-full h-full flex items-center justify-between">
-        {/* LOGO ARCHITECTURE */}
-        <Link href="/" className="group flex items-center gap-4">
-          <div className="relative w-12 h-12 rounded-2xl bg-[var(--primary)] flex items-center justify-center overflow-hidden transition-all duration-500 group-hover:rotate-[10deg] shadow-xl">
-             <span className="text-white font-display font-black text-2xl z-10">E</span>
-             <div className="absolute inset-0 bg-[var(--accent)] translate-y-full group-hover:translate-y-0 transition-transform duration-500 opacity-20" />
+      <div className="container-full h-full flex items-center justify-between gap-4">
+        {/* LOGO - ARCHITECTURAL BRANDING */}
+        <Link href="/" className="group flex items-center gap-3 shrink-0">
+          <div className="relative w-12 h-12 flex items-center justify-center">
+             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-500 group-hover:rotate-12">
+               <path d="M24 4L4 44H44L24 4Z" stroke="var(--primary)" strokeWidth="4" strokeLinejoin="round" />
+               <path d="M24 16L12 40H36L24 16Z" fill="var(--secondary)" />
+               <rect x="22" y="32" width="4" height="12" fill="var(--primary)" />
+             </svg>
           </div>
-          <div className="flex flex-col">
-            <span className="font-display font-black text-sm tracking-[0.2em] text-[var(--primary)] uppercase">EDOMIAS</span>
-            <span className="text-[9px] font-bold text-[var(--accent)] uppercase tracking-[0.3em] -mt-1 group-hover:tracking-[0.4em] transition-all">Strategic Partner</span>
+          <div className="flex flex-col -gap-1">
+            <span className="font-display font-black text-lg tracking-tight text-[var(--primary)] transition-colors">EDOMIAS</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--secondary)]">International Plc</span>
           </div>
         </Link>
 
-        {/* DESKTOP NAV - CENTERED */}
-        <nav className="hidden lg:flex items-center gap-2">
+        {/* DESKTOP NAV */}
+        <nav className="hidden xl:flex items-center gap-2 bg-[var(--bg-ghost)]/50 p-1.5 rounded-full border border-[var(--border)]">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`relative px-5 py-2 text-[11px] font-bold uppercase tracking-widest transition-all hover:text-[var(--primary)] group ${
-                pathname === link.href ? "text-[var(--primary)]" : "text-[var(--text-dim)]"
+              className={`px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all ${
+                pathname === link.href ? "bg-[var(--primary)] text-white shadow-lg" : "text-[var(--text-dim)] hover:text-[var(--primary)]"
               }`}
             >
               {link.label}
-              <span className={`absolute bottom-0 left-5 right-5 h-[2px] bg-[var(--accent)] transition-all duration-300 ${
-                pathname === link.href ? "opacity-100" : "opacity-0 group-hover:opacity-50"
-              }`} />
             </Link>
           ))}
         </nav>
 
-        {/* UTILITIES HUB */}
-        <div className="flex items-center gap-4">
-           {/* LOCALE DROPDOWN - CUSTOM STYLED */}
-           <div className="hidden sm:flex items-center bg-[var(--bg-ghost)] border border-[var(--border-soft)] rounded-full pl-4 pr-1 py-1 gap-2 hover:border-[var(--primary)] transition-all">
-              <Globe size={14} className="text-[var(--primary)]" />
-              <select
-                value={locale}
-                onChange={(e) => setLocale(e.target.value as any)}
-                className="bg-transparent text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer pr-8 py-2"
-              >
-                <option value="en">English</option>
-                <option value="am">አማርኛ</option>
-                <option value="or">Oromoo</option>
-              </select>
-           </div>
-
-           {/* THEME TOGGLE - ANIMATED */}
+        {/* UTILS HUB */}
+        <div className="flex items-center gap-3">
+           {/* THEME TOGGLE */}
            <button 
              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-             className="w-10 h-10 rounded-full flex items-center justify-center text-[var(--primary)] hover:bg-[var(--bg-ghost)] transition-all relative overflow-hidden"
+             className="w-11 h-11 rounded-2xl bg-[var(--bg-ghost)] border border-[var(--border)] flex items-center justify-center text-[var(--primary)] active:scale-90 transition-all hover:border-[var(--secondary)]"
            >
-             <div className={`transition-all duration-500 ${theme === "light" ? "rotate-0 scale-100" : "rotate-90 scale-0"}`}>
-               <Moon size={18} />
-             </div>
-             <div className={`absolute transition-all duration-500 ${theme === "dark" ? "rotate-0 scale-100" : "rotate-90 scale-0"}`}>
-               <Sun size={18} />
-             </div>
+             {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
            </button>
 
-           <Link href="/jobs" className="btn-elite btn-primary-elite hidden md:flex active:scale-95">
+           {/* HIGH-END LANG SELECTOR */}
+           <div className="relative hidden sm:block">
+              <button 
+                onClick={() => setShowLang(!showLang)}
+                className="lang-dropdown flex items-center gap-4 active:scale-95"
+              >
+                <Globe size={16} className="text-[var(--primary)]" />
+                <span className="uppercase tracking-widest text-[10px]">{locale === 'en' ? 'English' : locale === 'am' ? 'አማርኛ' : 'Oromoo'}</span>
+                <ChevronDown size={14} className={`transition-transform duration-300 ${showLang ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {showLang && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full right-0 mt-3 w-64 bg-[var(--bg-main)] border border-[var(--border)] rounded-[2rem] shadow-2xl p-3 overflow-hidden z-[9999]"
+                  >
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => { setLocale(lang.code as any); setShowLang(false); }}
+                        className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all ${locale === lang.code ? 'bg-[var(--primary)] text-white shadow-lg' : 'hover:bg-[var(--bg-ghost)]'}`}
+                      >
+                        <div className="flex flex-col items-start">
+                          <span className="text-sm font-bold">{lang.label}</span>
+                          <span className={`text-[9px] uppercase tracking-widest ${locale === lang.code ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>{lang.sub}</span>
+                        </div>
+                        {locale === lang.code && <div className="w-2 h-2 rounded-full bg-[var(--secondary)]" />}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+           </div>
+
+           <Link href="/jobs" className="hidden lg:flex px-8 py-4 bg-[var(--primary)] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:shadow-emerald-900/20 active:scale-95 transition-all">
               {t.nav.jobs}
            </Link>
 
            {/* MOBILE TRIGGER */}
            <button 
              onClick={() => setIsOpen(!isOpen)} 
-             className="lg:hidden w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-ghost)] text-[var(--primary)] active:scale-90 transition-all"
+             className="xl:hidden w-11 h-11 flex items-center justify-center rounded-2xl bg-[var(--primary)] text-white shadow-lg shadow-emerald-900/20 active:scale-90 transition-all"
            >
-             {isOpen ? <X size={24} /> : <Menu size={24} />}
+             {isOpen ? <X size={20} /> : <Menu size={20} />}
            </button>
         </div>
       </div>
 
-      {/* MOBILE FULLSCREEN OVERLAY */}
-      <div className={`lg:hidden fixed inset-0 top-0 bg-[var(--bg-main)] z-[200] transition-all duration-700 ${
-        isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-      }`}>
-        <div className="h-20 container-full flex items-center justify-between border-b border-[var(--border-soft)]">
-           <span className="font-display font-black text-sm tracking-widest text-[var(--primary)]">MENU</span>
-           <button onClick={() => setIsOpen(false)} className="w-12 h-12 flex items-center justify-center bg-[var(--bg-ghost)] rounded-2xl">
-             <X size={24} />
-           </button>
-        </div>
-        
-        <div className="p-8 space-y-10">
-          <nav className="flex flex-col gap-6">
-            {NAV_LINKS.map((link, i) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="text-4xl font-display font-bold text-[var(--text-main)] hover:text-[var(--primary)] transition-all flex items-center justify-between group"
-                style={{ transitionDelay: `${i * 100}ms` }}
-              >
-                {link.label}
-                <ChevronRight className="opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all text-[var(--accent)]" />
-              </Link>
-            ))}
-          </nav>
+      {/* MOBILE OVERLAY */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 bg-[var(--bg-main)] z-[9999] overflow-y-auto"
+          >
+            <div className="h-24 container-full flex items-center justify-between border-b border-[var(--border)] mb-8">
+               <span className="text-[10px] font-black tracking-[0.3em] uppercase text-[var(--primary)]">Gateway Access</span>
+               <button onClick={() => setIsOpen(false)} className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-ghost)] shadow-inner">
+                  <X size={24} />
+               </button>
+            </div>
+            
+            <div className="px-8 space-y-10 pb-20">
+               <nav className="flex flex-col gap-4">
+                  {NAV_LINKS.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-4xl font-display font-bold text-[var(--text-main)] hover:text-[var(--primary)] transition-all flex items-center justify-between py-2"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+               </nav>
 
-          <div className="pt-10 border-t border-[var(--border-soft)] space-y-6">
-             <div className="flex flex-col gap-4">
-                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-dim)]">Regional Accessibility</span>
-                <div className="grid grid-cols-3 gap-2">
-                   {["en", "am", "or"].map((lang) => (
-                      <button 
-                        key={lang}
-                        onClick={() => { setLocale(lang as any); setIsOpen(false); }}
-                        className={`py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${
-                          locale === lang ? "bg-[var(--primary)] text-white border-[var(--primary)] shadow-lg" : "border-[var(--border-soft)] text-[var(--text-dim)]"
-                        }`}
-                      >
-                         {lang === "en" ? "ENG" : lang === "am" ? "አማርኛ" : "ORO"}
-                      </button>
-                   ))}
-                </div>
-             </div>
-             <Link href="/jobs" onClick={() => setIsOpen(false)} className="btn-elite btn-primary-elite w-full py-5 text-sm">
-                Open Career Portal
-             </Link>
-          </div>
-        </div>
-      </div>
+               <div className="pt-10 border-t border-[var(--border)] space-y-8">
+                  <div className="space-y-4">
+                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Regional Interface</span>
+                     <div className="grid grid-cols-1 gap-2">
+                        {languages.map((lang) => (
+                          <button
+                            key={lang.code}
+                            onClick={() => { setLocale(lang.code as any); setIsOpen(false); }}
+                            className={`flex items-center justify-between p-6 rounded-3xl border ${locale === lang.code ? 'bg-[var(--primary)] border-[var(--primary)] text-white shadow-xl' : 'border-[var(--border)]'}`}
+                          >
+                             <span className="text-xl font-bold">{lang.label}</span>
+                             <span className="text-[10px] font-black uppercase tracking-widest opacity-60">{lang.sub}</span>
+                          </button>
+                        ))}
+                     </div>
+                  </div>
+                  <Link href="/jobs" onClick={() => setIsOpen(false)} className="block w-full py-6 bg-[var(--secondary)] text-[var(--primary)] rounded-3xl text-center font-black uppercase tracking-[0.2em] shadow-xl">
+                    Open Intelligence Portal
+                  </Link>
+               </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
