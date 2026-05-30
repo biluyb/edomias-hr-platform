@@ -29,16 +29,16 @@ export default function Navbar() {
   ];
 
   const languages = [
-    { code: 'en', label: 'English', sub: 'Global' },
-    { code: 'am', label: 'አማርኛ', sub: 'Ethiopia' },
-    { code: 'or', label: 'Oromoo', sub: 'East Africa' }
+    { code: 'en', label: 'English' },
+    { code: 'am', label: 'አማርኛ' },
+    { code: 'or', label: 'Oromoo' }
   ];
 
   return (
     <header 
       style={{ zIndex: 9999 }}
-      className={`fixed top-0 left-0 right-0 transition-all duration-500 ${
-        scrolled ? "h-20 bg-[var(--glass)] backdrop-blur-xl border-b border-[var(--border)] shadow-xl" : "h-28 bg-transparent"
+      className={`fixed top-0 left-0 right-0 transition-all duration-500 border-b ${
+        scrolled ? "h-20 bg-[var(--glass)] backdrop-blur-xl border-[var(--border)] shadow-xl" : "h-28 bg-[var(--bg-main)]/30 backdrop-blur-md border-white/10"
       }`}
     >
       <div className="container-full h-full flex items-center justify-between gap-4">
@@ -109,7 +109,6 @@ export default function Navbar() {
                       >
                         <div className="flex flex-col items-start">
                           <span className="text-sm font-bold">{lang.label}</span>
-                          <span className={`text-[9px] uppercase tracking-widest ${locale === lang.code ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>{lang.sub}</span>
                         </div>
                         {locale === lang.code && <div className="w-2 h-2 rounded-full bg-[var(--secondary)]" />}
                       </button>
@@ -126,7 +125,7 @@ export default function Navbar() {
            {/* MOBILE TRIGGER */}
            <button 
              onClick={() => setIsOpen(!isOpen)} 
-             className="xl:hidden w-11 h-11 flex items-center justify-center rounded-2xl bg-[var(--primary)] text-white shadow-lg shadow-emerald-900/20 active:scale-90 transition-all"
+             className="xl:hidden btn-mobile-trigger"
            >
              {isOpen ? <X size={20} /> : <Menu size={20} />}
            </button>
@@ -175,7 +174,6 @@ export default function Navbar() {
                             className={`flex items-center justify-between p-6 rounded-3xl border ${locale === lang.code ? 'bg-[var(--primary)] border-[var(--primary)] text-white shadow-xl' : 'border-[var(--border)]'}`}
                           >
                              <span className="text-xl font-bold">{lang.label}</span>
-                             <span className="text-[10px] font-black uppercase tracking-widest opacity-60">{lang.sub}</span>
                           </button>
                         ))}
                      </div>

@@ -10,7 +10,7 @@ export default function AboutPage() {
     <div className="bg-[var(--bg-main)] min-h-screen">
       {/* MAGNIFIED INSTITUTIONAL IDENTITY */}
       <section className="relative pt-64 pb-32 overflow-hidden bg-[var(--primary)] selection:bg-[var(--secondary)] selection:text-[var(--primary)]">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] blend-overlay" />
+        <div className="grain-overlay opacity-10" />
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(circle,rgba(212,175,55,0.1)_0%,transparent_70%)]" />
         
         <div className="container-full relative z-10 text-center space-y-12">
@@ -53,8 +53,8 @@ export default function AboutPage() {
                <div className="p-12 bg-[var(--primary)] rounded-[3rem] text-white space-y-6 shadow-2xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--secondary)] opacity-10 blur-3xl group-hover:scale-150 transition-transform duration-1000" />
                   <History size={48} className="text-[var(--secondary)]" />
-                  <h3 className="text-white text-3xl font-display">Proven Resilience</h3>
-                  <p className="text-sm text-white/70 leading-relaxed font-bold uppercase tracking-[0.1em]">Two decades of high-trust service level agreements with global NGOs and industry leaders.</p>
+                  <h3 className="text-white text-3xl font-display">{t.about.proven}</h3>
+                  <p className="text-sm text-white/70 leading-relaxed font-bold uppercase tracking-[0.1em]">{t.about.resilienceText}</p>
                </div>
             </div>
 
@@ -70,7 +70,8 @@ export default function AboutPage() {
                  <motion.div 
                    initial={{ opacity: 0, x: 20 }}
                    whileInView={{ opacity: 1, x: 0 }}
-                   transition={{ delay: i * 0.1 }}
+                   viewport={{ once: true }}
+                   transition={{ delay: i * 0.05 }}
                    key={i} 
                    className="relative pl-12 pb-24 group last:pb-0"
                  >
@@ -90,7 +91,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CORE VALUES - SIMPLICITY & CONSISTENCY */}
+      {/* CORE VALUES */}
       <section className="py-40 bg-[var(--bg-main)]">
         <div className="container-full text-center space-y-24">
            <div className="space-y-4">

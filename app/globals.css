@@ -24,29 +24,29 @@
 }
 
 [data-theme='dark'] {
-  /* REFINED DARK MODE - SOFT ON EYES (DEEP FOREST) */
-  --bg-main: #0a120c; /* Soft Deep Green/Black */
-  --bg-soft: #0e1a11;
-  --bg-ghost: #142419;
+  /* REFINED DARK MODE - ULTRA VISIBILITY */
+  --bg-main: #0a120c; 
+  --bg-soft: #121d16;
+  --bg-ghost: #18281e;
   
-  --text-main: #e8edea;
-  --text-dim: #9aaf9f;
-  --text-muted: #647a6b;
+  --text-main: #ffffff; /* Absolute white for visibility */
+  --text-dim: #ccd8cf;
+  --text-muted: #8ca394;
   
-  --border: #1a2b20;
-  --glass: rgba(10, 18, 12, 0.9);
-  --shadow: 0 10px 100px rgba(0,0,0,0.5);
+  --border: #24362b;
+  --glass: rgba(10, 18, 12, 0.95);
+  --shadow: 0 10px 100px rgba(0,0,0,0.7);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --bg-main: #0a120c;
-    --bg-soft: #0e1a11;
-    --bg-ghost: #142419;
-    --text-main: #e8edea;
-    --text-dim: #9aaf9f;
-    --border: #1a2b20;
-    --glass: rgba(10, 18, 12, 0.9);
+    --bg-soft: #121d16;
+    --bg-ghost: #18281e;
+    --text-main: #ffffff;
+    --text-dim: #ccd8cf;
+    --border: #24362b;
+    --glass: rgba(10, 18, 12, 0.95);
   }
 }
 
@@ -56,7 +56,8 @@ body {
   font-family: 'Inter', 'Noto Sans Ethiopic', sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition: background-color 0.2s ease, color 0.1s ease;
+  overflow-x: hidden;
 }
 
 /* TYPOGRAPHY */
@@ -64,18 +65,34 @@ h1, h2, h3, h4, .font-display {
   font-family: 'Plus Jakarta Sans', 'Noto Sans Ethiopic', sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--text-main); /* Ensure headers respect theme */
 }
 
 /* Fix for hidden texts in dark mode */
 .text-dim { color: var(--text-dim) !important; }
 .text-main { color: var(--text-main) !important; }
+.text-muted { color: var(--text-muted) !important; }
 
-/* MODIFIED NAV BAR Z-INDEX */
-header { z-index: 1000 !important; }
+/* NAVBAR SYSTEM */
+header { 
+  z-index: 9999 !important; 
+  isolation: isolate; 
+}
 
 .container-full {
-  width: min(92%, 1380px);
+  width: min(94%, 1440px);
   margin-inline: auto;
+}
+
+/* NOISE LAYER FIX */
+.grain-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 10;
+  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+  mix-blend-mode: soft-light; /* Better than overlay for visibility */
 }
 
 /* CUSTOM DROPDOWN STYLE */
@@ -91,34 +108,48 @@ header { z-index: 1000 !important; }
   transition: all 0.3s;
   box-shadow: var(--shadow);
 }
-.lang-dropdown:hover {
-  border-color: var(--primary);
-  transform: translateY(-1px);
-}
 
 /* CARD PAGES CONSISTENCY */
 .card-glass {
   background: var(--bg-main);
   border: 1px solid var(--border);
-  border-radius: 1.5rem;
-  padding: 2rem;
+  border-radius: 2rem;
+  padding: 2.5rem;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   box-shadow: var(--shadow);
+  color: var(--text-main);
 }
+
 .card-glass:hover {
-  transform: translateY(-8px);
+  transform: translateY(-5px);
   border-color: var(--secondary);
 }
 
-/* MOBILE RESPONSIVITY LAYER */
-@media (max-width: 768px) {
-  html { font-size: 14px; }
-  .container-full { width: 90%; }
+/* MOBILE RESPONSIVITY BUTTONS */
+.btn-mobile-trigger {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(33, 91, 48, 0.3);
+  transition: all 0.2s;
 }
 
-/* ANIMATIONS */
+/* MOBILE FIRST UTILITIES */
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+  .container-full { width: 92%; }
+  h1 { font-size: 3rem !important; }
+  .hide-mobile { display: none !important; }
+}
+
+/* REVEAL ANIMATIONS */
 @keyframes reveal-up {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.reveal { animation: reveal-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.reveal { animation: reveal-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }

@@ -20,17 +20,21 @@ export default function Footer() {
           {/* BRAND COLUMN */}
           <div className="lg:col-span-5 space-y-10">
             <Link href="/" className="group flex items-center gap-4">
-              <div className="relative w-12 h-12 rounded-2xl bg-[var(--primary)] flex items-center justify-center overflow-hidden shadow-xl group-hover:rotate-6 transition-all">
-                 <span className="text-white font-display font-black text-2xl z-10">E</span>
+              <div className="relative w-12 h-12 flex items-center justify-center">
+                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-500 group-hover:rotate-12 translate-y-1">
+                   <path d="M24 4L4 44H44L24 4Z" stroke="var(--primary)" strokeWidth="4" strokeLinejoin="round" />
+                   <path d="M24 16L12 40H36L24 16Z" fill="var(--secondary)" />
+                   <rect x="22" y="32" width="4" height="12" fill="var(--primary)" />
+                 </svg>
               </div>
               <div className="flex flex-col">
                 <span className="font-display font-black text-sm tracking-[0.2em] text-[var(--primary)] uppercase">EDOMIAS</span>
-                <span className="text-[9px] font-bold text-[var(--accent)] uppercase tracking-[0.3em] -mt-1 group-hover:tracking-[0.4em] transition-all">Strategic Partner</span>
+                <span className="text-[9px] font-bold text-[var(--accent)] uppercase tracking-[0.3em] -mt-1 group-hover:tracking-[0.4em] transition-all">International Plc</span>
               </div>
             </Link>
             
             <p className="text-lg text-[var(--text-dim)] font-medium leading-relaxed max-w-sm italic-accent">
-              "Standardizing Excellence in Human Capital for the East African Industrial Landscape since 2005."
+              {t.hero.subtitle}
             </p>
 
             <div className="flex gap-4">
