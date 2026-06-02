@@ -41,10 +41,10 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-5">
-                <Link href="/jobs" className="px-10 py-5 bg-[var(--primary)] text-white rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl hover:shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-4">
+                <Link href="/jobs" className="px-10 py-5 btn-primary-glow rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-4">
                   {t.hero.cta} <ArrowRight size={18} />
                 </Link>
-                <Link href="/contact" className="px-10 py-5 bg-[var(--bg-main)] border border-[var(--border)] text-[var(--primary)] rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-[var(--bg-ghost)] active:scale-95 transition-all text-center">
+                <Link href="/contact" className="px-10 py-5 btn-secondary-glass text-[var(--text-main)] rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center text-center">
                   {t.hero.quote}
                 </Link>
               </div>
@@ -116,7 +116,7 @@ export default function HomePage() {
                          <div className="px-3 py-1 bg-[var(--bg-ghost)] rounded-lg text-[9px] font-bold text-[var(--text-dim)] border border-[var(--border)] flex items-center gap-2"><MapPin size={12}/> {job.location}</div>
                          <div className="px-3 py-1 bg-[var(--bg-ghost)] rounded-lg text-[9px] font-bold text-[var(--primary)] border border-emerald-100 flex items-center gap-2"><Clock size={12}/> {job.type}</div>
                       </div>
-                      <Link href={`/jobs`} className="w-full h-14 bg-[var(--primary)] text-white rounded-xl flex items-center justify-center font-black uppercase text-[10px] tracking-widest group-hover:bg-[var(--secondary)] transition-all">
+                      <Link href={`/jobs`} className="w-full h-14 btn-secondary-glass rounded-xl flex items-center justify-center font-black uppercase text-[10px] tracking-widest">
                          Review Details
                       </Link>
                    </div>
@@ -156,7 +156,7 @@ export default function HomePage() {
                        <h3 className="text-2xl font-bold">Upload Your Professional CV</h3>
                        <p className="text-sm font-medium text-[var(--text-muted)]">PDF, TIFF, DOCX (Max 20MB Artifact)</p>
                     </div>
-                    <button className="w-full py-6 bg-[var(--primary)] text-white rounded-2xl font-black uppercase tracking-widest shadow-2xl hover:scale-[1.02] active:scale-95 transition-all text-xs">
+                    <button className="w-full py-6 btn-primary-glow rounded-2xl font-black uppercase tracking-widest">
                        Join Global Talent Pool
                     </button>
                     <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-[var(--primary)] opacity-[0.02] rounded-full blur-3xl" />

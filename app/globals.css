@@ -11,42 +11,43 @@
   --accent: #b28e2a;
   
   --bg-main: #ffffff;
-  --bg-soft: #f8faf9;
-  --bg-ghost: #f3f7f5;
+  --bg-soft: #F9FAFB;
+  --bg-ghost: #F3F4F6;
   
-  --text-main: #0a110c;
-  --text-dim: #455a4d;
-  --text-muted: #83978b;
+  --text-main: #111827;
+  --text-dim: #4B5563;
+  --text-muted: #9CA3AF;
   
-  --border: #e2e8e4;
+  --border: #E5E7EB;
   --glass: rgba(255, 255, 255, 0.85);
-  --shadow: 0 4px 60px rgba(0,0,0,0.05);
+  --shadow: 0 8px 30px rgba(0,0,0,0.04);
 }
 
 [data-theme='dark'] {
-  /* REFINED DARK MODE - ULTRA VISIBILITY */
-  --bg-main: #0a120c; 
-  --bg-soft: #121d16;
-  --bg-ghost: #18281e;
+  /* SAAS ENTERPRISE RECRUITMENT PALETTE (PREMIUM DARK) */
+  --bg-main: #070a0e;
+  --bg-soft: #111820;
+  --bg-ghost: #1a2333;
   
-  --text-main: #ffffff; /* Absolute white for visibility */
-  --text-dim: #ccd8cf;
-  --text-muted: #8ca394;
+  --text-main: #FFFFFF;
+  --text-dim: #B8C1CC;
+  --text-muted: #7E8A98;
   
-  --border: #24362b;
-  --glass: rgba(10, 18, 12, 0.95);
-  --shadow: 0 10px 100px rgba(0,0,0,0.7);
+  --border: rgba(255,255,255,0.10);
+  --glass: rgba(7, 10, 14, 0.90);
+  --shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg-main: #0a120c;
-    --bg-soft: #121d16;
-    --bg-ghost: #18281e;
-    --text-main: #ffffff;
-    --text-dim: #ccd8cf;
-    --border: #24362b;
-    --glass: rgba(10, 18, 12, 0.95);
+    --bg-main: #070a0e;
+    --bg-soft: #111820;
+    --bg-ghost: #1a2333;
+    --text-main: #FFFFFF;
+    --text-dim: #B8C1CC;
+    --text-muted: #7E8A98;
+    --border: rgba(255,255,255,0.10);
+    --glass: rgba(7, 10, 14, 0.90);
   }
 }
 
@@ -109,20 +110,63 @@ header {
   box-shadow: var(--shadow);
 }
 
-/* CARD PAGES CONSISTENCY */
+/* CARD PAGES CONSISTENCY - PREMIUM SAAS */
 .card-glass {
-  background: var(--bg-main);
+  background: var(--bg-ghost);
   border: 1px solid var(--border);
-  border-radius: 2rem;
+  border-radius: 20px;
   padding: 2.5rem;
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   box-shadow: var(--shadow);
   color: var(--text-main);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
 }
 
 .card-glass:hover {
   transform: translateY(-5px);
-  border-color: var(--secondary);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
+
+.card-glass:hover::before {
+  opacity: 1;
+}
+
+/* GRADIENT BUTTON PIPELINE */
+.btn-primary-glow {
+  background: linear-gradient(135deg, var(--primary) 0%, #2d7a41 100%);
+  box-shadow: 0 4px 20px rgba(33, 91, 48, 0.25);
+  color: #ffffff !important;
+  transition: all 0.3s;
+}
+.btn-primary-glow:hover {
+  box-shadow: 0 8px 30px rgba(33, 91, 48, 0.4);
+  transform: scale(1.02);
+}
+
+.btn-secondary-glass {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+}
+.btn-secondary-glass:hover {
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 6px 30px rgba(0,0,0,0.3);
 }
 
 /* MOBILE RESPONSIVITY BUTTONS */

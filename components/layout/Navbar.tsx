@@ -37,9 +37,7 @@ export default function Navbar() {
   return (
     <header 
       style={{ zIndex: 9999 }}
-      className={`fixed top-0 left-0 right-0 transition-all duration-500 border-b ${
-        scrolled ? "h-20 bg-[var(--glass)] backdrop-blur-xl border-[var(--border)] shadow-xl" : "h-28 bg-[var(--bg-main)]/30 backdrop-blur-md border-white/10"
-      }`}
+      className="fixed top-0 left-0 right-0 h-20 bg-[var(--bg-main)] border-b border-[var(--border)] shadow-sm flex items-center transition-all duration-300"
     >
       <div className="container-full h-full flex items-center justify-between gap-4">
         {/* LOGO - ARCHITECTURAL BRANDING */}
@@ -149,39 +147,42 @@ export default function Navbar() {
                </button>
             </div>
             
-            <div className="px-8 space-y-10 pb-20">
-               <nav className="flex flex-col gap-4">
+            <div className="px-6 space-y-6 pb-20">
+               <nav className="flex flex-col gap-1">
                   {NAV_LINKS.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="text-4xl font-display font-bold text-[var(--text-main)] hover:text-[var(--primary)] transition-all flex items-center justify-between py-2"
+                      className={`flex items-center justify-between px-5 py-4 rounded-2xl text-base font-bold transition-all ${
+                        pathname === link.href 
+                          ? 'bg-[var(--primary)] text-white shadow-lg' 
+                          : 'text-[var(--text-main)] hover:bg-[var(--bg-ghost)]'
+                      }`}
                     >
-                      {link.label}
+                      <span>{link.label}</span>
+                      {pathname === link.href && <div className="w-2 h-2 rounded-full bg-[var(--secondary)]" />}
                     </Link>
                   ))}
                </nav>
 
-               <div className="pt-10 border-t border-[var(--border)] space-y-8">
-                  <div className="space-y-4">
-                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Regional Interface</span>
-                     <div className="grid grid-cols-1 gap-2">
-                        {languages.map((lang) => (
-                          <button
-                            key={lang.code}
-                            onClick={() => { setLocale(lang.code as any); setIsOpen(false); }}
-                            className={`flex items-center justify-between p-6 rounded-3xl border ${locale === lang.code ? 'bg-[var(--primary)] border-[var(--primary)] text-white shadow-xl' : 'border-[var(--border)]'}`}
-                          >
-                             <span className="text-xl font-bold">{lang.label}</span>
-                          </button>
-                        ))}
-                     </div>
+               <div className="pt-6 border-t border-[var(--border)] space-y-4">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] px-2">Language</span>
+                  <div className="grid grid-cols-3 gap-2">
+                     {languages.map((lang) => (
+                       <button
+                         key={lang.code}
+                         onClick={() => { setLocale(lang.code as any); setIsOpen(false); }}
+                         className={`flex items-center justify-center p-3.5 rounded-xl border text-sm font-bold transition-all ${locale === lang.code ? 'bg-[var(--primary)] border-[var(--primary)] text-white shadow-lg' : 'border-[var(--border)] text-[var(--text-dim)] hover:bg-[var(--bg-ghost)]'}`}
+                       >
+                          {lang.label}
+                       </button>
+                     ))}
                   </div>
-                  <Link href="/jobs" onClick={() => setIsOpen(false)} className="block w-full py-6 bg-[var(--secondary)] text-[var(--primary)] rounded-3xl text-center font-black uppercase tracking-[0.2em] shadow-xl">
-                    Open Intelligence Portal
-                  </Link>
                </div>
+               <Link href="/jobs" onClick={() => setIsOpen(false)} className="block w-full py-4 btn-primary-glow rounded-2xl text-center font-black uppercase tracking-[0.15em] text-sm">
+                 {t.nav.jobs}
+               </Link>
             </div>
           </motion.div>
         )}
