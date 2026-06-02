@@ -25,8 +25,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     
     if (savedTheme) {
       setTheme(savedTheme);
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
+    } else {
+      setTheme("light");
     }
 
     if (savedLocale) setLocaleState(savedLocale);
