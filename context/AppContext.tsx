@@ -29,7 +29,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setTheme("light");
     }
 
-    if (savedLocale) setLocaleState(savedLocale);
+    // Validate saved locale against DICTIONARY keys
+    if (savedLocale && DICTIONARY[savedLocale as Locale]) {
+      setLocaleState(savedLocale);
+    } else {
+      setLocaleState("en");
+      localStorage.setItem("locale", "en"); // Reset invalid legacy strings
+    }
   }, []);
 
   const setTheme = (newTheme: Theme) => {

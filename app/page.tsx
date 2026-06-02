@@ -27,25 +27,25 @@ export default function HomePage() {
             >
               <div className="inline-flex items-center gap-3 px-5 py-2 bg-[var(--bg-ghost)] rounded-full border border-[var(--border)]">
                  <div className="w-2 h-2 rounded-full bg-[var(--secondary)] animate-pulse" />
-                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--primary)]">{t.hero.badge}</span>
+                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--primary)]">{t?.hero?.badge || "Legacy"}</span>
               </div>
 
               <h1 className="text-pretty leading-[1.05] tracking-tighter">
-                {t.hero.title} <br/>
+                {t?.hero?.title || "Strategic"} <br/>
                 <span className="text-[var(--primary)]">{locale === 'am' ? 'የሰው ኃይል' : locale === 'or' ? 'Humna Namaa' : 'Human Capital'}</span> <br/>
                 <span className="italic-accent text-[var(--secondary)] tracking-normal low-case">{locale === 'am' ? 'ብቃት::' : locale === 'or' ? 'Ga’umsa.' : 'Excellence.'}</span>
               </h1>
 
               <p className="text-xl text-[var(--text-dim)] max-w-xl font-medium leading-relaxed">
-                {t.hero.subtitle}
+                {t?.hero?.subtitle || "Excellence"}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-5">
                 <Link href="/jobs" className="px-10 py-5 btn-primary-glow rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-4">
-                  {t.hero.cta} <ArrowRight size={18} />
+                  {t?.hero?.cta || "Jobs"} <ArrowRight size={18} />
                 </Link>
                 <Link href="/contact" className="px-10 py-5 btn-secondary-glass text-[var(--text-main)] rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center text-center">
-                  {t.hero.quote}
+                  {t?.hero?.quote || "Contact"}
                 </Link>
               </div>
 
